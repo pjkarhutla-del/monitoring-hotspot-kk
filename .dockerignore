@@ -1,0 +1,23 @@
+# Docker
+Dockerfile
+.dockerignore
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+venv/
+*.egg-info/
+
+# Git
+.git
+.gitignore
+
+# IDE / Editor
+.vscode/
+.idea/
+
+# Backup files
+*_backup.py

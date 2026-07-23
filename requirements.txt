@@ -1,0 +1,21 @@
+# Flask and Gunicorn for web server
+flask
+gunicorn
+
+# HTTP requests
+requests
+
+# Environment variables
+python-dotenv
+
+# Geospatial libraries
+# Pinning versions to ensure compatibility and avoid fiona.path error.
+# Geopandas < 0.12.0 is not compatible with Fiona >= 1.9.
+geopandas>=0.12.0
+fiona>=1.9.0
+pyproj>=3.4.0
+shapely>=2.0.0
+
+# Google Sheets integration
+gspread>=6.0.0
+google-auth>=2.0.0
