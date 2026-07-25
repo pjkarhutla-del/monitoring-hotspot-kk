@@ -34,7 +34,7 @@ class HotspotMonitor:
                 gdf = gpd.read_file('KK_PAPUA_SELATAN.geojson')
                 logging.info(f"Loaded {len(gdf)} features from KK_PAPUA_SELATAN.geojson")
 
-                gdf_proj = gdf.to_crs("EPSG:32750")
+                gdf_proj = gdf.to_crs("EPSG:4326")
                 
                 protected_areas = {}
                 for idx, row in gdf.iterrows():
