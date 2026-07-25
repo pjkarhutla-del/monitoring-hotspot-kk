@@ -138,7 +138,7 @@ class HotspotMonitor:
                 return False, None, None
 
         hotspot_gdf = gpd.GeoDataFrame({'geometry': [hotspot_point]}, crs='EPSG:4326')
-        hotspot_point_proj = hotspot_gdf.to_crs('EPSG:32750').geometry.iloc[0]
+        hotspot_point_proj = hotspot_gdf.to_crs('EPSG:4326').geometry.iloc[0]
 
         nearest_area = None
         min_distance = float('inf')
