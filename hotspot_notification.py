@@ -21,7 +21,7 @@ logging.basicConfig(
     ]
 )
 
-DEFAULT_PROVINSI_IDS = ['14', '15']
+DEFAULT_PROVINSI_IDS = ['39']
 
 class HotspotMonitor:
     def __init__(self):
