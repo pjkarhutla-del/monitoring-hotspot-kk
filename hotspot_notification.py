@@ -34,7 +34,7 @@ class HotspotMonitor:
                 gdf = gpd.read_file('KK_PAPUA_SELATAN.geojson')
                 logging.info(f"Loaded {len(gdf)} features from KK_PAPUA_SELATAN.geojson")
 
-                gdf_proj = gdf.to_crs("EPSG:4326")
+                gdf_proj = gdf.to_crs("EPSG:3857")
                 
                 protected_areas = {}
                 for idx, row in gdf.iterrows():
@@ -137,8 +137,8 @@ class HotspotMonitor:
             if geom.contains(hotspot_point) or geom.touches(hotspot_point):
                 return False, None, None
 
-        hotspot_gdf = gpd.GeoDataFrame({'geometry': [hotspot_point]}, crs='EPSG:4326')
-        hotspot_point_proj = hotspot_gdf.to_crs('EPSG:4326').geometry.iloc[0]
+        hotspot_gdf = gpd.GeoDataFrame({'geometry': [hotspot_point]}, crs='EPSG:3857')
+        hotspot_point_proj = hotspot_gdf.to_crs('EPSG:3857').geometry.iloc[0]
 
         nearest_area = None
         min_distance = float('inf')
