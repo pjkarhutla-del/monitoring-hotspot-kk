@@ -117,16 +117,35 @@ class HotspotMonitor:
         return all_features
     
     def is_hotspot_in_conservation_area(self, hotspot_lat, hotspot_lon):
+
         hotspot_point = Point(hotspot_lon, hotspot_lat)
-        
+
+        logging.info(
+            f"[CHECK INSIDE] Lat={hotspot_lat}, Lon={hotspot_lon}"
+        )
+
         for area_id, area_info in self.protected_areas.items():
+
             area_name = area_info['name']
             geometry = area_info['geometry']
-            
-            if geometry.contains(hotspot_point) or geometry.touches(hotspot_point):
-                logging.info(f"Hotspot at {hotspot_lat:.6f}, {hotspot_lon:.6f} is within {area_name}")
+
+            contains = geometry.contains(hotspot_point)
+            touches = geometry.touches(hotspot_point)
+
+            logging.info(
+                f"Area={area_name} "
+                f"contains={contains} "
+                f"touches={touches}"
+            )
+
+            if contains or touches:
+                logging.info(
+                    f"✅ Hotspot berada di kawasan konservasi {area_name}"
+                )
                 return True, area_name
-        
+
+        logging.info("❌ Tidak berada di kawasan konservasi")
+
         return False, None
 
     def is_hotspot_near_conservation_area(self, hotspot_lat, hotspot_lon, buffer_meters=100):
@@ -139,7 +158,7 @@ class HotspotMonitor:
 
         # hotspot_gdf = gpd.GeoDataFrame({'geometry': [hotspot_point]}, crs='EPSG:4326')
         # hotspot_point_proj = hotspot_gdf.to_crs('EPSG:32750').geometry.iloc[0]
-        hotspot_gdf = gpd.GeoDataFrame({'geometry': [hotspot_point]}, crs='EPSG:3857')
+        hotspot_gdf = gpd.GeoDataFrame({'geometry': [hotspot_point]}, crs='EPSG:4326')
         hotspot_point_proj = hotspot_gdf.to_crs('EPSG:3857').geometry.iloc[0]
 
         nearest_area = None
@@ -153,6 +172,10 @@ class HotspotMonitor:
             distance_m = hotspot_point_proj.distance(area_geom_proj)
 
             if distance_m <= buffer_meters and distance_m < min_distance:
+                logging.info(
+                    f"Area={area_info['name']} "
+                    f"Distance={distance_m:.2f} meter"
+                )
                 min_distance = distance_m
                 nearest_area = area_info['name']
 

@@ -63,7 +63,18 @@ def process_hotspots(monitor: HotspotMonitor, hotspots: list, buffer_meters: int
             lon, lat = coordinates[0], coordinates[1]
             desa = properties.get('desa', 'Tidak Diketahui')
 
+            logging.info("-" * 60)
+            logging.info(f"HOTSPOT #{i+1}")
+            logging.info(f"Desa      : {desa}")
+            logging.info(f"Latitude  : {lat}")
+            logging.info(f"Longitude : {lon}")
+
             is_inside, area_name = monitor.is_hotspot_in_conservation_area(lat, lon)
+
+            logging.info(
+            f"Hasil cek kawasan konservasi -> "
+            f"inside={is_inside}, area={area_name}"
+)
             if is_inside:
                 logging.warning(f"HOTSPOT DI DALAM kawasan konservasi: {area_name}")
                 logging.warning(f"   Lokasi: {desa}, Koordinat: {lat:.6f}, {lon:.6f}")
@@ -72,6 +83,12 @@ def process_hotspots(monitor: HotspotMonitor, hotspots: list, buffer_meters: int
 
             is_near, near_area_name, distance_m = monitor.is_hotspot_near_conservation_area(
                 lat, lon, buffer_meters
+            )
+            logging.info(
+                f"Hasil cek buffer -> "
+                f"near={is_near}, "
+                f"area={near_area_name}, "
+                f"jarak={distance_m}"
             )
             if is_near:
                 logging.warning(
@@ -102,6 +119,16 @@ def run_daily_check():
         total_fetched = len(hotspots)
         logging.info(f"Diterima {total_fetched} data hotspot.")
 
+        logging.info("=" * 70)
+        logging.info("HASIL PENGAMBILAN DATA HOTSPOT")
+        logging.info(f"Total hotspot dari API SiPongi : {total_fetched}")
+
+        if total_fetched > 0:
+            sample = hotspots[0]
+            logging.info(f"Sample hotspot pertama: {sample}")
+
+        logging.info("=" * 70)
+
 
         if total_fetched == 0:
             logging.warning(
@@ -113,6 +140,14 @@ def run_daily_check():
             return
         
         inside_alerts, near_alerts = process_hotspots(monitor, hotspots)
+        
+        logging.info("=" * 70)
+        logging.info("HASIL ANALISIS HOTSPOT")
+        logging.info(f"Total hotspot              : {len(hotspots)}")
+        logging.info(f"Hotspot di dalam kawasan   : {len(inside_alerts)}")
+        logging.info(f"Hotspot dekat batas        : {len(near_alerts)}")
+        logging.info("=" * 70)
+
         hotspots_in_protected_areas = len(inside_alerts)
         hotspots_near_boundary      = len(near_alerts)
 
