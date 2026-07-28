@@ -28,7 +28,7 @@ def check_environment():
         'run_daily_monitor.py',
         'hotspot_notification.py',
         'broadcast_notification.py',
-        'KK_PAPUA_SELATAN.geojson'
+        'KK_BKSDA_PAPUA_SELATAN.geojson'
     ]
     
     missing_files = []
@@ -178,7 +178,7 @@ def api_conservation_areas():
     try:
         import geopandas as gpd
         
-        geojson_path = 'KK_PAPUA_SELATAN.geojson'
+        geojson_path = 'KK_BKSDA_PAPUA_SELATAN.geojson'
         if not os.path.exists(geojson_path):
             return jsonify({'type': 'FeatureCollection', 'features': [], 'error': 'GeoJSON file not found'}), 404
         
