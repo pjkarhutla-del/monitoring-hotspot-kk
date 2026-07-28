@@ -39,7 +39,7 @@ class HotspotMonitor:
                 protected_areas = {}
                 for idx, row in gdf.iterrows():
                     area_id = f"kawasan_konservasi_{idx+1}"
-                    area_name = row.get('NAMA_KWS', row.get('name', f'Kawasan Konservasi {idx+1}'))
+                    area_name = row.get('NKWS', row.get('name', f'Kawasan Konservasi {idx+1}'))
                     protected_areas[area_id] = {
                         'name': area_name,
                         'geometry': row.geometry,
