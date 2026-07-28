@@ -30,16 +30,16 @@ class HotspotMonitor:
         
     def load_protected_areas(self):
         try:
-            if os.path.exists('KK_BKSDA_PAPUA_SELATAN.geojson'):
-                gdf = gpd.read_file('KK_BKSDA_PAPUA_SELATAN.geojson')
-                logging.info(f"Loaded {len(gdf)} features from KK_BKSDA_PAPUA_SELATAN.geojson")
+            if os.path.exists('KK_PAPUA_SELATAN.geojson'):
+                gdf = gpd.read_file('KK_PAPUA_SELATAN.geojson')
+                logging.info(f"Loaded {len(gdf)} features from KK_PAPUA_SELATAN.geojson")
 
-                gdf_proj = gdf.to_crs("EPSG:32750")
+                gdf_proj = gdf.to_crs("EPSG:3857")
                 
                 protected_areas = {}
                 for idx, row in gdf.iterrows():
                     area_id = f"kawasan_konservasi_{idx+1}"
-                    area_name = row.get('NKWS', row.get('name', f'Kawasan Konservasi {idx+1}'))
+                    area_name = row.get('NAMA_KWS', row.get('name', f'Kawasan Konservasi {idx+1}'))
                     protected_areas[area_id] = {
                         'name': area_name,
                         'geometry': row.geometry,
@@ -51,7 +51,7 @@ class HotspotMonitor:
             logging.error(f"Gagal memuat file kawasan konservasi: {e}")
             raise
 
-        raise FileNotFoundError("KK_BKSDA_PAPUA_SELATAN.geojson not found. Cannot initialize HotspotMonitor.")
+        raise FileNotFoundError("KK_PAPUA_SELATAN.geojson not found. Cannot initialize HotspotMonitor.")
     
     def get_hotspot_data(self, provinsi_id=None, kabkota_id=None, days_back=1, specific_date=None, start_date=None, end_date=None):
         if start_date and end_date:
@@ -137,8 +137,10 @@ class HotspotMonitor:
             if geom.contains(hotspot_point) or geom.touches(hotspot_point):
                 return False, None, None
 
-        hotspot_gdf = gpd.GeoDataFrame({'geometry': [hotspot_point]}, crs='EPSG:4326')
-        hotspot_point_proj = hotspot_gdf.to_crs('EPSG:32750').geometry.iloc[0]
+        # hotspot_gdf = gpd.GeoDataFrame({'geometry': [hotspot_point]}, crs='EPSG:4326')
+        # hotspot_point_proj = hotspot_gdf.to_crs('EPSG:32750').geometry.iloc[0]
+        hotspot_gdf = gpd.GeoDataFrame({'geometry': [hotspot_point]}, crs='EPSG:3857')
+        hotspot_point_proj = hotspot_gdf.to_crs('EPSG:3857').geometry.iloc[0]
 
         nearest_area = None
         min_distance = float('inf')
