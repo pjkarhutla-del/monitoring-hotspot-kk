@@ -21,7 +21,7 @@ logging.basicConfig(
     ]
 )
 
-DEFAULT_PROVINSI_IDS = ['14', '15']
+DEFAULT_PROVINSI_IDS = ['39']
 
 class HotspotMonitor:
     def __init__(self):
@@ -30,9 +30,9 @@ class HotspotMonitor:
         
     def load_protected_areas(self):
         try:
-            if os.path.exists('KK_BKSDA_KALTIM.geojson'):
-                gdf = gpd.read_file('KK_BKSDA_KALTIM.geojson')
-                logging.info(f"Loaded {len(gdf)} features from KK_BKSDA_KALTIM.geojson")
+            if os.path.exists('KK_BKSDA_PAPUA_SELATAN.geojson'):
+                gdf = gpd.read_file('KK_BKSDA_PAPUA_SELATAN.geojson')
+                logging.info(f"Loaded {len(gdf)} features from KK_BKSDA_PAPUA_SELATAN.geojson")
 
                 gdf_proj = gdf.to_crs("EPSG:32750")
                 
@@ -51,7 +51,7 @@ class HotspotMonitor:
             logging.error(f"Gagal memuat file kawasan konservasi: {e}")
             raise
 
-        raise FileNotFoundError("KK_BKSDA_KALTIM.geojson not found. Cannot initialize HotspotMonitor.")
+        raise FileNotFoundError("KK_BKSDA_PAPUA_SELATAN.geojson not found. Cannot initialize HotspotMonitor.")
     
     def get_hotspot_data(self, provinsi_id=None, kabkota_id=None, days_back=1, specific_date=None, start_date=None, end_date=None):
         if start_date and end_date:
